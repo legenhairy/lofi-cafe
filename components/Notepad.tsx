@@ -122,15 +122,14 @@ export default function Notepad({ showNotepad }: NotepadProps) {
   };
 
   return (
-    // Centered iverlay partially covering the screen
+    // Centered overlay partially covering the screen
     <div className="fixed z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[420px] flex items-center justify-center pointer-events-none">
       {/* Modal window with sidebar */}
       <div className="bg-white rounded-2xl shadow-2xl border-2 border-purple-400 p-0 flex w-[600px] min-h-[320px] select-none pointer-events-auto">
         {/* Sidebar */}
-        <div className="w-1/3 bg-gray-100 border-r-2 border-black rounded-l-2xl flex flex-col">
+        <div className="w-1/3 bg-gray-100 border-r-2 border-black rounded-l-2xl flex flex-col h-[320px]">
           <div className="flex items-center justify-between px-3 py-2 border-b border-purple-100">
             <span className="font-bold text-purple-700">Previous Notes</span>
-            {/* <button onClick={handleNewNote} className="text-xs px-2 py-1 bg-purple-100 rounded hover:bg-purple-200">New</button> */}
             <SquarePlus onClick={handleNewNote} className="cursor-pointer hover:bg-purple-200" />
           </div>
           <div className="flex-1 overflow-y-auto">
@@ -143,7 +142,7 @@ export default function Notepad({ showNotepad }: NotepadProps) {
               >
                 <div className="flex-1">
                   <div className="font-medium text-sm text-purple-800">{renderPreview(n.content)}</div>
-                  <div className="text-xs text-gray-400">{new Date(n.created).toLocaleString()}</div>
+                  <div className="text-sm text-slate-800">{new Date(n.created).toLocaleString()}</div>
                 </div>
                 {/* Delete button, only shows on hover */}
                 <button
@@ -171,7 +170,7 @@ export default function Notepad({ showNotepad }: NotepadProps) {
             {/* <button onClick={showNotepad} className="text-gray-400 hover:text-black text-2xl font-bold">&times;</button> old button was a little narrow*/}
             <button
               onClick={showNotepad}
-              aria-label="Close soundboard"
+              aria-label="Close notepad"
               className="top-2 right-2 text-black-300 bg-transparent rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

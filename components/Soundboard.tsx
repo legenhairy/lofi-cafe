@@ -6,9 +6,16 @@ interface SoundboardProps {
 }
 
 const Soundboard = ({ showSoundBoard }: SoundboardProps) => {
-  const { play: playRain, pause: pauseRain, isPlaying: isPlayingRain } = useSound('ambient/rain');
-  const { play: playFire, pause: pauseFire, isPlaying: isPlayingFire } = useSound('ambient/campfire');
-  const { play: playWind, pause: pauseWind, isPlaying: isPlayingWind } = useSound('ambient/wind');
+  const { play: playRain, pause: pauseRain, isPlaying: isPlayingRain } = useSound('ambient/rain', { 
+    loop: true 
+  });
+  const { play: playFire, pause: pauseFire, isPlaying: isPlayingFire } = useSound('ambient/campfire', { 
+    loop: true 
+  });
+  const { play: playWind, pause: pauseWind, isPlaying: isPlayingWind } = useSound('ambient/wind', { 
+    loop: true 
+  });
+
 
   const [fireVolume, setFireVolume] = useState(40);
   const [rainVolume, setRainVolume] = useState(40);

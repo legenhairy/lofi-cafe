@@ -55,48 +55,40 @@ export default function Home() {
     });
   });
   
-  // Effect to handle key press for setting volume to 0
+  // This hook handles all keyboard shortcuts in one place
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'm') {
-        setIsMuted(!isMuted);
+      const key = event.key.toLowerCase();
+
+      switch (key) {
+        case 'm':
+          setIsMuted((prev) => !prev);
+          break;
+        case 'escape':
+          setShowShortcuts(false);
+          break;
+        case 'arrowleft':
+          handleSkipPrevious();
+          break;
+        case 'arrowright':
+          handleSkipNext();
+          break;
+        case 'space':
+          togglePlayPause();
+          break;
       }
     }
 
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [isMuted])
-
-  // Effect to handle key press for closing menu with escape key
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'escape') {
-        setShowShortcuts(false)
-      }
-    }
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [showShortcuts])
-  
-  // Effect to handle left or right key press for changing stream
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'arrowleft') {
-        handleSkipPrevious()
-      }
-      if (event.key.toLowerCase() === 'arrowright') {
-        handleSkipNext()
-      }
-    }
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
   }, [])
 
-  // Handle stream change, this is the main function that will be called when the user clicks on a stream thumbnail
+  // Handle stream change when the user clicks on a stream thumbnail
   const handleStreamChange = (stream: Stream) => {
+    if (stream.id === currentStream.id) return; // if user selects same stream, do nothing
     setCurrentStream(stream)
     setIsPlaying(false)
-    setIsPlayerLoading(true); // Start loading when stream changes
+    setIsPlayerLoading(true); 
   }
   
   const togglePlayPause = () => {
@@ -134,7 +126,7 @@ export default function Home() {
     // Hide loading spinner when video starts playing or is paused (ready to interact)
     if (playerState === 1 || playerState === 2 || playerState === 0) {
       setIsPlayerLoading(false);
-    } else if (playerState === 3) { // Only show buffering for buffering when stream is loading, not when playing the stream
+    } else if (playerState === 3) { // Only show buffering for buffering when stream is being switched
       if (!isPlaying) {
         setIsPlayerLoading(true);
       }
@@ -179,6 +171,10 @@ export default function Home() {
       document.documentElement.requestFullscreen();
     }
   };
+
+  const handleShowShortcuts = () => {
+    setShowShortcuts(!showShortcuts);
+  }
 
   return (
     <main className="min-h-screen relative overflow-hidden tech-font">
@@ -235,7 +231,7 @@ export default function Home() {
             <button type="button" className="flex items-center">
               <Github size={24} color="#ffffff" />
             </button>
-            <button type="button" className="flex items-center">
+            <button type="button" className="flex items-center" onClick={handleShowShortcuts}>
               <BookHeadphones size={24} color="#ffffff" />
             </button>
           </div>
@@ -254,7 +250,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/*The below div container will hold the arrow keys explanation like lofi.cafe, add the text drop shadow, rewrite this later as a set of mapped components */}
+          {/*Mapped list of keyboard shortcuts */}
           <div id="about-container" className="flex flex-col items-end justify-center text-center pt-4 gap-6">
             {shortcuts.map(({ key, desc }) => (
               <div key={key} className="flex items-center justify-between gap-4 text-md">

@@ -52,7 +52,7 @@ export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onR
     }
   }, [isMuted]);
 
-  // Parameters come from Youtube Iframe API Reference
+  // Parameters come from Youtube Iframe API docs
   const opts: YouTubeProps['opts'] = {
     height: '0',  // Hidden player frames
     width: '0',   // Hidden player frames
@@ -62,7 +62,7 @@ export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onR
       disablekb: 1, // turn off keyboard controls for player itself
       fs: 0, // turn off the fullscreen button in player
       iv_load_policy: 3, // Hide annotations
-      rel: 0,
+      rel: 0, // do not show related videos
     },
   };
 
