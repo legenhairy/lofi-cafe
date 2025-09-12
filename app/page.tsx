@@ -2,9 +2,8 @@
 import Image from "next/image"
 import { backgroundGifs } from "@/const/gifList"
 import { lofiStreams } from "@/const/streamList"
-import { shortcuts } from "@/const/shortcuts"
 import { useState, useEffect } from 'react'
-import { Volume2, AudioLines, SkipBack, SkipForward, ListMusic, Play, Pause, Shuffle, Timer, NotebookPen, Expand, Github, BookHeadphones, Sparkles } from "lucide-react"
+import { Volume2, AudioLines, ListMusic, Expand, Github, BookHeadphones } from "lucide-react"
 import StreamThumbnails from "@/components/StreamThumbnails";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import PomodoroTimer from "@/components/PomodoroTimer";
@@ -12,6 +11,9 @@ import Soundboard from "@/components/Soundboard";
 import { YouTubePlayer as YTPlayer } from 'react-youtube';
 import Modal from "@/components/ui/Modal";
 import Notepad from "@/components/Notepad";
+import ActionButtons from "@/components/ActionButtons";
+import KeyboardShortcuts from "@/components/KeyboardShortcuts";
+import { PlayerControls } from '@/components/PlayerControls';
 import { useGlobalShortcut } from "@/hooks/useGlobalShortcut";
 
 interface Stream {
@@ -28,8 +30,7 @@ export default function Home() {
   const [volume, setVolume] = useState(50); 
   const [isMuted, setIsMuted] = useState(false);
   const [currentGifIndex, setCurrentGifIndex] = useState(0);
-  const [player, setPlayer] = useState<YTPlayer | null>(null);
-  // for the pomodoro timer appearing
+
   const [showTimer, setShowTimer] = useState(false);
   const [showSounds, setShowSounds] = useState(false);
   const [showStreamModal, setShowStreamModal] = useState(false);
@@ -111,7 +112,7 @@ export default function Home() {
   }
 
   const handlePlayerReady = (ytPlayer: YTPlayer) => {
-    setPlayer(ytPlayer);
+
     ytPlayer.setVolume(volume);
     if (isMuted) {
       ytPlayer.mute();
@@ -208,7 +209,7 @@ export default function Home() {
         />
       </div>
 
-      {/*Place the pomodoro component here based on button click */}
+      {/*Toggle on the sidebar components based on button click */}
       {showTimer && <PomodoroTimer showTimer={handleShowTimer} />} 
       {showSounds && <Soundboard showSoundBoard={handleShowSounds} />}
       {showNotepad && <Notepad showNotepad={handleShowNotepad} />}
@@ -238,44 +239,24 @@ export default function Home() {
         </div>
 
         <div className="z-10 flex justify-between">
-          <div className="flex flex-col justify-around space-y-4">
-            <button type="button" className="flex items-center hover:scale-125" onClick={handleShowTimer}>
-              <Timer size={40} color="#ffffff" />
-            </button>
-            <button type="button" className="flex items-center hover:scale-125" onClick={handleShowNotepad}>
-              <NotebookPen size={40} color="#ffffff" />
-            </button>
-            <button type="button" className="flex items-center hover:scale-125" onClick={handleShowSounds}>
-              <Sparkles size={40} color="#fefefe" />
-            </button>
-          </div>
+          <ActionButtons
+            onShowTimer={handleShowTimer}
+            onShowNotepad={handleShowNotepad}
+            onShowSounds={handleShowSounds}
+          />
 
-          {/*Mapped list of keyboard shortcuts */}
-          <div id="about-container" className="flex flex-col items-end justify-center text-center pt-4 gap-6">
-            {shortcuts.map(({ key, desc }) => (
-              <div key={key} className="flex items-center justify-between gap-4 text-md">
-                <kbd className="bg-white/10 px-2 py-1 rounded text-white/60 border-green-400 border">{key}</kbd>
-                <span className="text-white/80 text-2xl">{desc}</span>    
-              </div>  
-            ))}
-          </div>
+          {/*Keyboard shortcuts component */}
+          <KeyboardShortcuts />
         </div>
         {/*Bottom section for the player controls*/}
         <div className="flex flex-col w-full gap-4 z-10">
-          <div id="buttons-ui" className="flex justify-center items-center w-full">
-            <button type="button" className="flex items-center mr-10 text-white" onClick={togglePlayPause}> 
-              {isPlaying ? <Pause size={36} /> : <Play size={36} className="ml-1" color="#ffffff" />}
-            </button>
-            <button type="button" className="flex items-center mr-10" onClick={handlePlayerShuffle}>
-              <Shuffle size={36} color="#ffffff" />
-            </button>
-            <button type="button" className="flex items-center mr-10" onClick={handleSkipPrevious}>
-              <SkipBack size={36} color="#ffffff" />
-            </button>
-            <button type="button" className="flex items-center" onClick={handleSkipNext}>
-              <SkipForward size={36} color="#ffffff" />
-            </button>
-          </div>
+          <PlayerControls
+            isPlaying={isPlaying}
+            togglePlayPause={togglePlayPause}
+            handlePlayerShuffle={handlePlayerShuffle}
+            handleSkipPrevious={handleSkipPrevious}
+            handleSkipNext={handleSkipNext}
+          />
           {/*Volume slider and stream selector */}
           <div id="stream-selector" className="flex justify-center items-center gap-4">
             <button type="button">
