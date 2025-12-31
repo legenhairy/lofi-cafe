@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NotebookPen, SquarePlus } from "lucide-react";
+import { SquarePlus } from "lucide-react";
 
 // Helper to get notes array from localStorage
 function getSavedNotes() {

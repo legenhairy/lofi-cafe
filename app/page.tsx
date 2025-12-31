@@ -3,11 +3,12 @@ import Image from "next/image"
 import { backgroundGifs } from "@/const/gifList"
 import { lofiStreams } from "@/const/streamList"
 import { useState, useEffect } from 'react'
-import { Volume2, AudioLines, ListMusic, Expand, Github, BookHeadphones } from "lucide-react"
+import { AudioLines, ListMusic, Expand, Github, BookHeadphones } from "lucide-react"
 import StreamThumbnails from "@/components/StreamThumbnails";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import PomodoroTimer from "@/components/PomodoroTimer";
 import Soundboard from "@/components/Soundboard";
+import VolumeControl from "@/components/VolumeControl";
 import { YouTubePlayer as YTPlayer } from 'react-youtube';
 import Modal from "@/components/ui/Modal";
 import Notepad from "@/components/Notepad";
@@ -112,7 +113,6 @@ export default function Home() {
   }
 
   const handlePlayerReady = (ytPlayer: YTPlayer) => {
-
     ytPlayer.setVolume(volume);
     if (isMuted) {
       ytPlayer.mute();
@@ -259,14 +259,7 @@ export default function Home() {
           />
           {/*Volume slider and stream selector */}
           <div id="stream-selector" className="flex justify-center items-center gap-4">
-            <button type="button">
-              <Volume2 size={36} color="#ffffff" /> 
-            </button>
-            <input min="0" max="100" step="1" 
-              className="w-40 h-2 bg-black rounded-lg appearance-none cursor-pointer" 
-              type="range" value={volume}
-              onChange={(e) => setVolume(parseInt(e.target.value))}
-            />
+            <VolumeControl volume={volume} onVolumeChange={setVolume} />
             {/* Open stream modal on click */}
             <button type="button" onClick={() => setShowStreamModal(true)}>
               <ListMusic size={36} color="#ffffff" />
