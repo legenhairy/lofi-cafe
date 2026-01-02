@@ -19,7 +19,7 @@ export default function ActionButtons({
         onClick={onShowTimer}
         aria-label="Show timer"
       >
-        <Timer size={40} color="#ffffff" />
+        <Timer size={48} color="#ffffff" />
       </button>
       <button 
         type="button" 
@@ -27,7 +27,7 @@ export default function ActionButtons({
         onClick={onShowNotepad}
         aria-label="Show notepad"
       >
-        <NotebookPen size={40} color="#ffffff" />
+        <NotebookPen size={48} color="#ffffff" />
       </button>
       <button 
         type="button" 
@@ -35,7 +35,7 @@ export default function ActionButtons({
         onClick={onShowSounds}
         aria-label="Show soundboard"
       >
-        <Sparkles size={40} color="#fefefe" />
+        <Sparkles size={48} color="#fefefe" />
       </button>
     </div>
   )

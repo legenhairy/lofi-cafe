@@ -92,6 +92,11 @@ export default function Home() {
     setIsPlaying(false)
     setIsPlayerLoading(true); 
   }
+
+  const handleStreamSelect = (stream: Stream) => {
+    handleStreamChange(stream);
+    setShowStreamModal(false);
+  }
   
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying)
@@ -245,7 +250,6 @@ export default function Home() {
             onShowSounds={handleShowSounds}
           />
 
-          {/*Keyboard shortcuts component */}
           <KeyboardShortcuts />
         </div>
         {/*Bottom section for the player controls*/}
@@ -271,10 +275,7 @@ export default function Home() {
       <Modal isOpen={showStreamModal} onClose={() => setShowStreamModal(false)}>
         <h2 className="text-2xl font-bold text-white mb-4 text-center drop-shadow">Select a Stream</h2>
         <StreamThumbnails
-          onSelectStream={(stream) => {
-            handleStreamChange(stream);
-            setShowStreamModal(false);
-          }}
+          onSelectStream={handleStreamSelect}
           currentStreamId={currentStream.id}
         />
       </Modal>

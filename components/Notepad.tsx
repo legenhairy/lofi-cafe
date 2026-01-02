@@ -123,11 +123,11 @@ export default function Notepad({ showNotepad }: NotepadProps) {
 
   return (
     // Centered overlay partially covering the screen
-    <div className="fixed z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[420px] flex items-center justify-center pointer-events-none">
+    <div className="fixed z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[620px] h-auto md:h-[420px] flex items-center justify-center pointer-events-none p-4">
       {/* Modal window with sidebar */}
-      <div className="bg-white rounded-2xl shadow-2xl border-2 border-purple-400 p-0 flex w-[600px] min-h-[320px] select-none pointer-events-auto">
+      <div className="bg-white rounded-2xl shadow-2xl border-2 border-purple-400 p-0 flex w-full min-h-[320px] select-none pointer-events-auto overflow-hidden">
         {/* Sidebar */}
-        <div className="w-1/3 bg-gray-100 border-r-2 border-black rounded-l-2xl flex flex-col h-[320px]">
+        <div className="hidden sm:flex w-1/3 bg-gray-100 border-r-2 border-black flex-col h-[320px]">
           <div className="flex items-center justify-between px-3 py-2 border-b border-purple-100">
             <span className="font-bold text-purple-700">Previous Notes</span>
             <SquarePlus onClick={handleNewNote} className="cursor-pointer hover:bg-purple-200" />
