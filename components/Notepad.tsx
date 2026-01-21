@@ -128,7 +128,7 @@ export default function Notepad({ showNotepad }: NotepadProps) {
       <div className="bg-white rounded-2xl shadow-2xl border-2 border-purple-400 p-0 flex w-full min-h-[320px] select-none pointer-events-auto overflow-hidden">
         {/* Sidebar */}
         <div className="hidden sm:flex w-1/3 bg-gray-100 border-r-2 border-black flex-col h-[320px]">
-          <div className="flex items-center justify-between px-3 py-2 border-b border-purple-100">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-purple-300">
             <span className="font-bold text-purple-700">Previous Notes</span>
             <SquarePlus onClick={handleNewNote} className="cursor-pointer hover:bg-purple-200" />
           </div>
@@ -144,7 +144,6 @@ export default function Notepad({ showNotepad }: NotepadProps) {
                   <div className="font-medium text-sm text-purple-800">{renderPreview(n.content)}</div>
                   <div className="text-sm text-slate-800">{new Date(n.created).toLocaleString()}</div>
                 </div>
-                {/* Delete button, only shows on hover */}
                 <button
                   className="ml-2 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
                   title="Delete note"

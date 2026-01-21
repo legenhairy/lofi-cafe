@@ -15,7 +15,7 @@ import Notepad from "@/components/Notepad";
 import ActionButtons from "@/components/ActionButtons";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import { PlayerControls } from '@/components/PlayerControls';
-import { useGlobalShortcut } from "@/hooks/useGlobalShortcut";
+import { getYouTubeId } from "@/utils/youtube";
 
 interface Stream {
   id: string
@@ -38,52 +38,8 @@ export default function Home() {
   const [isPlayerLoading, setIsPlayerLoading] = useState(false); // Loading state when the music is loading in
   const [showNotepad, setShowNotepad] = useState(false);
   
-  
-  // Extract YouTube video ID from URL
-  const getYouTubeId = (url: string): string => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : '';
-  };
-
   // Compute videoId directly from currentStream.url
   const videoId = getYouTubeId(currentStream.url);
-
-  // Use custom hook for the Gif shortcut, the shortcut should run only when the user is not typing in an input, textarea, or contenteditable element
-  useGlobalShortcut('g', () => {
-    setCurrentGifIndex((prev) => {
-      const nextIndex = prev + 1;
-      return nextIndex >= backgroundGifs.length ? 0 : nextIndex;
-    });
-  });
-  
-  // This hook handles all keyboard shortcuts in one place
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase();
-
-      switch (key) {
-        case 'm':
-          setIsMuted((prev) => !prev);
-          break;
-        case 'escape':
-          setShowShortcuts(false);
-          break;
-        case 'arrowleft':
-          handleSkipPrevious();
-          break;
-        case 'arrowright':
-          handleSkipNext();
-          break;
-        case 'space':
-          togglePlayPause();
-          break;
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [])
 
   // Handle stream change when the user clicks on a stream thumbnail
   const handleStreamChange = (stream: Stream) => {
@@ -132,7 +88,7 @@ export default function Home() {
     // Hide loading spinner when video starts playing or is paused (ready to interact)
     if (playerState === 1 || playerState === 2 || playerState === 0) {
       setIsPlayerLoading(false);
-    } else if (playerState === 3) { // Only show buffering for buffering when stream is being switched
+    } else if (playerState === 3) { // Only show buffering when stream is being switched
       if (!isPlaying) {
         setIsPlayerLoading(true);
       }
@@ -141,9 +97,7 @@ export default function Home() {
     // Update isPlaying based on player state
     if (playerState === 1) {
       setIsPlaying(true);
-    } else if (playerState === 2) {
-      setIsPlaying(false);
-    } else if (playerState === 0) {
+    } else if (playerState === 2 || playerState === 0) {
       setIsPlaying(false);
     }
   };
@@ -182,6 +136,51 @@ export default function Home() {
     setShowShortcuts(!showShortcuts);
   }
 
+  // Handle all global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Don't trigger shortcuts if the user is typing in a form element
+      const target = event.target as HTMLElement;
+      if (
+        target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      const key = event.key.toLowerCase();
+
+      switch (key) {
+        case 'g':
+          setCurrentGifIndex((prev) => (prev + 1) % backgroundGifs.length);
+          break;
+        case 'm':
+          setIsMuted((prev) => !prev);
+          break;
+        case 'escape':
+          setShowShortcuts(false);
+          break;
+        case 'arrowleft':
+          event.preventDefault(); 
+          handleSkipPrevious();
+          break;
+        case 'arrowright':
+          event.preventDefault(); 
+          handleSkipNext();
+          break;
+        case ' ': // Actual spacebar character
+        case 'space': // Fallback for older browsers
+          event.preventDefault(); 
+          togglePlayPause();
+          break;
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, []); 
+
   return (
     <main className="min-h-screen relative overflow-hidden tech-font">
       {/* Loading spinner overlay */}
@@ -202,7 +201,6 @@ export default function Home() {
         />
       )}
       
-      {/*Gif background filling the whole screen */}
       <div className="absolute inset-0 w-full h-full bg-center"> 
         <Image
           src={backgroundGifs[currentGifIndex]}
@@ -243,14 +241,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="z-10 flex justify-between">
+        <div className="z-10 flex justify-between items-center">
           <ActionButtons
             onShowTimer={handleShowTimer}
             onShowNotepad={handleShowNotepad}
             onShowSounds={handleShowSounds}
           />
 
-          <KeyboardShortcuts />
+          {showShortcuts && <KeyboardShortcuts />}
         </div>
         {/*Bottom section for the player controls*/}
         <div className="flex flex-col w-full gap-4 z-10">

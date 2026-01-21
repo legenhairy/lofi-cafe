@@ -12,7 +12,7 @@ export default function ActionButtons({
   onShowSounds 
 }: ActionButtonsProps) {
   return (
-    <div className="flex flex-col justify-around space-y-4">
+    <div className="flex flex-col gap-12">
       <button 
         type="button" 
         className="flex items-center hover:scale-125 transition-transform duration-200" 
