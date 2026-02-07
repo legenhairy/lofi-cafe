@@ -224,7 +224,11 @@ export default function Home() {
           <div>
             <h2 className="text-2xl md:text-5xl font-bold text-white mb-2">Now Playing</h2>
             <div className="flex gap-4 items-center">
-              <AudioLines size={24} color="#ffffff" />
+              <AudioLines 
+                size={24} 
+                color="#ffffff" 
+                className={isPlaying ? "animate-audio" : ""} 
+              />
               <p className="text-xl md:text-2xl text-white/90">{currentStream.title}</p>
             </div>
           </div>

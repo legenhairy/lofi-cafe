@@ -15,3 +15,20 @@ span {
 .tech-font {
   font-family: var(--font-vt323);
 }
+
+@keyframes audio-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.5); }
+}
+
+.animate-audio path {
+  transform-origin: center;
+  animation: audio-wave 1.2s ease-in-out infinite;
+}
+
+.animate-audio path:nth-child(1) { animation-delay: 0.0s; }
+.animate-audio path:nth-child(2) { animation-delay: 0.2s; }
+.animate-audio path:nth-child(3) { animation-delay: 0.4s; }
+.animate-audio path:nth-child(4) { animation-delay: 0.6s; }
+.animate-audio path:nth-child(5) { animation-delay: 0.8s; }
+.animate-audio path:nth-child(6) { animation-delay: 1.0s; }
