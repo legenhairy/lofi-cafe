@@ -22,13 +22,8 @@ const Soundboard = ({ showSoundBoard }: SoundboardProps) => {
   const [windVolume, setWindVolume] = useState(40);
 
   return (
-    <div className="fixed z-20 bg-black bg-opacity-60 rounded-lg shadow-lg border-2 border-blue-400
-        p-6 w-80 select-none"
-      style={{
-        left: "600px",
-        top: "50px",
-      }}>
-        {/* Close button to hide the soundboard */}
+    <div className="fixed z-20 bg-black/80 rounded-lg shadow-lg border-2 border-blue-400
+        p-6 w-80 max-w-[90vw] select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <button
           onClick={showSoundBoard}
           aria-label="Close soundboard"

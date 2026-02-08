@@ -3,6 +3,10 @@ import { Note } from "./notepad/types";
 import NoteSidebar from "./notepad/NoteSidebar";
 import NoteEditor from "./notepad/NoteEditor";
 
+interface NotepadProps {
+  showNotepad: () => void;
+}
+
 // Helper to get notes array from localStorage
 function getSavedNotes() {
   const notes = localStorage.getItem("notepad-notes");
@@ -12,10 +16,6 @@ function getSavedNotes() {
 // Helper to save notes array to localStorage
 function setSavedNotes(notes: Note[]) {
   localStorage.setItem("notepad-notes", JSON.stringify(notes));
-}
-
-interface NotepadProps {
-  showNotepad: () => void;
 }
 
 // Notepad window for jotting down notes with sidebar for previous notes
@@ -43,9 +43,22 @@ export default function Notepad({ showNotepad }: NotepadProps) {
     setSaved(true);
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     saveTimeout.current = setTimeout(() => setSaved(false), 1500);
+
+    // handle the edge case when no notes exist yet, new note created and saved when user starts typing 
+    if (!activeId) {
+      const newId = Date.now().toString();
+      const newNote = { id: newId, content: value, created: Date.now() };
+      setNotes((prev) => {
+        const updated = [newNote, ...prev];
+        setSavedNotes(updated);
+        return updated;
+      });
+      setActiveId(newId);
+      return;
+    }
+
     // Update current note in notes array
     setNotes((prev) => {
-      if (!activeId) return prev;
       const updated = prev.map((n) => (n.id === activeId ? { ...n, content: value } : n));
       setSavedNotes(updated);
       return updated;
@@ -54,22 +67,15 @@ export default function Notepad({ showNotepad }: NotepadProps) {
 
   // Save new note into the array
   const handleNewNote = () => {
-    if (note.trim() !== "") {
-      // Save current note before creating new
-      setNotes((prev) => {
-        const updated = prev.map((n) => (n.id === activeId ? { ...n, content: note } : n));
-        setSavedNotes(updated);
-        return updated;
-      });
-    }
-    const newNote = { id: Date.now().toString(), content: "", created: Date.now() };
+    const newId = Date.now().toString();
+    const newNote = { id: newId, content: "", created: Date.now() };
     setNotes((prev) => {
       const updated = [newNote, ...prev];
       setSavedNotes(updated);
       return updated;
     });
     setNote("");
-    setActiveId(newNote.id);
+    setActiveId(newId);
     setSaved(false);
   };
 
