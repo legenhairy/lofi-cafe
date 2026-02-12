@@ -23,7 +23,7 @@ export default function NoteEditor({
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-bold text-purple-700">Notes</h2>
+          <h2 className="text-2xl font-bold text-white drop-shadow-md">Notes</h2>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -34,7 +34,7 @@ export default function NoteEditor({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="lucide lucide-notebook-pen-icon lucide-notebook-pen"
+            className="lucide lucide-notebook-pen-icon lucide-notebook-pen text-white"
           >
             <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
             <path d="M2 6h4" />
@@ -47,7 +47,7 @@ export default function NoteEditor({
         <button
           onClick={onClose}
           aria-label="Close notepad"
-          className="top-2 right-2 text-black-300 bg-transparent rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="top-2 right-2 text-white/70 hover:text-white bg-transparent rounded-full p-1 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,26 +65,25 @@ export default function NoteEditor({
           </svg>
         </button>
       </div>
-      <hr className="mb-2" />
-      {/* Text Area */}
+      <hr className="mb-2 border-white/20" />
       <textarea
-        className="w-full min-h-[180px] bg-transparent outline-solid outline-blue-400 resize-none text-lg p-2"
+        className="w-full min-h-[180px] bg-transparent outline-none resize-none text-lg p-2 text-white placeholder:text-white/30"
         placeholder="What's on your mind? Tell me all about it..."
         value={note}
         onChange={onChange}
         autoFocus
       />
       {/* Clear button area */}
-      <div className="flex justify-between items-center mt-2 text-md text-red-500 bg-black/20 border-t-4 border-blue-300">
+      <div className="flex justify-between items-center mt-2 text-md text-white/80 bg-white/5 rounded-md p-1 border-t border-white/10">
         <div
-          className={`flex items-center transition-opacity duration-500 ${
+          className={`flex items-center transition-opacity duration-500 px-2 ${
             saved ? "opacity-100" : "opacity-0"
           }`}
           aria-live="polite"
         >
-          <span className="text-green-500 mr-1">✔</span>Saved
+          <span className="text-green-400 mr-1">✔</span>Saved
         </div>
-        <button onClick={onClear} className="px-3 py-1 rounded hover:bg-gray-100">
+        <button onClick={onClear} className="px-3 py-1 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors">
           Clear
         </button>
       </div>

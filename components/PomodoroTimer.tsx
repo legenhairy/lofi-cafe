@@ -5,38 +5,42 @@ interface PomodoroTimerProps {
   showTimer: () => void;
 }
 
+// Time constants in seconds
+const FOCUS_TIME = 25 * 60;
+const BREAK_TIME = 5 * 60;
+
 const PomodoroTimer = ({ showTimer }: PomodoroTimerProps) => {
-  const [timeLeft, setTimeLeft] = useState<number>(25 * 60)
-  const [isRunning, setIsRunning] = useState(false)
-  const [isBreak, setIsBreak] = useState(false)
+  const [timeLeft, setTimeLeft] = useState<number>(FOCUS_TIME);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isBreak, setIsBreak] = useState(false);
   // drag component state values
-  const [position, setPosition] = useState({ x: 200, y: 200 })
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: 200, y: 200 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   // controls are not needed since sound playing isnt attached to a button 
-  const handleSound = () => playSound('notification/notification')
+  const handleSound = () => playSound('notification/notification');
 
   // Format the time into MM:SS format - add this as a util function
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const toggleTimer = () => {
-    setIsRunning((prevIsRunning) => !prevIsRunning)
-  }
+    setIsRunning((prevIsRunning) => !prevIsRunning);
+  };
 
   // Reset the timer back to full time again, check if its break or work mode
   const resetTimer = () => {
-    setIsRunning(false)
-    setTimeLeft(isBreak ? 5 * 60: 25 * 60)
-  }
+    setIsRunning(false);
+    setTimeLeft(isBreak ? BREAK_TIME : FOCUS_TIME);
+  };
 
   const switchMode = () => {
     setIsBreak(!isBreak);
-    setTimeLeft(isBreak ? 25 * 60 : 5 * 60);
+    setTimeLeft(isBreak ? FOCUS_TIME : BREAK_TIME);
     setIsRunning(false);
   };
 
@@ -79,20 +83,20 @@ const PomodoroTimer = ({ showTimer }: PomodoroTimerProps) => {
     let interval: NodeJS.Timeout | null = null;
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1)
-      }, 1000)
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
     } else if (timeLeft === 0) {
       //play the end sound as a user notification
       handleSound();
       // Switch between the work and break mode
-      setIsBreak(!isBreak)
-      setTimeLeft(isBreak ? 25 * 60 : 5 * 60)
-      setIsRunning(false)
+      setIsBreak(!isBreak);
+      setTimeLeft(isBreak ? FOCUS_TIME : BREAK_TIME);
+      setIsRunning(false);
     }
 
     return () => {
       if (interval) {
-        clearInterval(interval)
+        clearInterval(interval);
       }
     };
   }, [isRunning, timeLeft, isBreak]);
@@ -161,7 +165,7 @@ const PomodoroTimer = ({ showTimer }: PomodoroTimerProps) => {
                 className={isBreak ? 'text-green-400' : 'text-red-400'}
                 style={{
                   strokeDasharray: `${2 * Math.PI * 50}`,
-                  strokeDashoffset: `${2 * Math.PI * 50 * (1 - (timeLeft / (isBreak ? 5 * 60 : 25 * 60)))}`
+                  strokeDashoffset: `${2 * Math.PI * 50 * (1 - (timeLeft / (isBreak ? BREAK_TIME : FOCUS_TIME)))}`
                 }}
               />
             </svg>
@@ -209,7 +213,7 @@ const PomodoroTimer = ({ showTimer }: PomodoroTimerProps) => {
           </button>
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default PomodoroTimer
+export default PomodoroTimer;

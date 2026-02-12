@@ -3,7 +3,7 @@ import Image from "next/image"
 import { backgroundGifs } from "@/const/gifList"
 import { lofiStreams } from "@/const/streamList"
 import { useState, useEffect } from 'react'
-import { AudioLines, ListMusic, Expand, Github, BookHeadphones } from "lucide-react"
+import { AudioLines, ListMusic, Expand, BookHeadphones } from "lucide-react"
 import StreamThumbnails from "@/components/StreamThumbnails";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import PomodoroTimer from "@/components/PomodoroTimer";
@@ -219,7 +219,6 @@ export default function Home() {
 
       {/*Adding a top bar with just some interactive buttons within outer flex wrapper*/}
       <div className="flex flex-col z-10 justify-between p-8 min-h-screen">
-        {/**Left child div is column wise, while right one is flexbox row */}
         <div className="z-10 flex justify-between">
           <div>
             <h2 className="text-2xl md:text-5xl font-bold text-white mb-2">Now Playing</h2>
@@ -235,9 +234,6 @@ export default function Home() {
           <div className="flex z-10 items-center justify-between gap-10">
             <button type="button" className="flex items-center" onClick={handleFullScreen}>
               <Expand size={24} color="#ffffff" />
-            </button>
-            <button type="button" className="flex items-center">
-              <Github size={24} color="#ffffff" />
             </button>
             <button type="button" className="flex items-center" onClick={handleShowShortcuts}>
               <BookHeadphones size={24} color="#ffffff" />

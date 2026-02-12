@@ -22,13 +22,13 @@ export default function NoteSidebar({
   onDeleteNote,
 }: NoteSidebarProps) {
   return (
-    <div className="hidden sm:flex w-1/3 bg-gray-100 border-r-2 border-black flex-col h-[320px]">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-purple-300">
-        <span className="font-bold text-purple-700">Previous Notes</span>
-        <SquarePlus onClick={onNewNote} className="cursor-pointer hover:bg-purple-200" />
+    <div className="hidden sm:flex w-1/3 bg-white/5 border-r border-white/10 flex-col h-[320px]">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+        <span className="font-bold text-white">Previous Notes</span>
+        <SquarePlus onClick={onNewNote} className="cursor-pointer text-white/70 hover:text-white transition-colors" />
       </div>
       <div className="flex-1 overflow-y-auto">
-        {notes.length === 0 && <div className="text-gray-400 p-4">No notes yet.</div>}
+        {notes.length === 0 && <div className="text-white/40 p-4 italic">No notes yet.</div>}
         {notes.map((n) => (
           <NoteItem
             key={n.id}
