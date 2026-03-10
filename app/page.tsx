@@ -198,6 +198,7 @@ export default function Home() {
           isMuted={isMuted}
           onReady={handlePlayerReady}
           onStateChange={handlePlayerStateChange}
+          onStreamError={handleSkipNext}
         />
       )}
       
@@ -206,7 +207,7 @@ export default function Home() {
           src={backgroundGifs[currentGifIndex]}
           alt="Background"
           fill
-          style={{ objectFit: 'cover', filter: 'brightness(0.6)' }}
+          className="object-cover brightness-[0.6]"
           priority
           unoptimized 
         />

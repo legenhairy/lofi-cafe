@@ -8,9 +8,10 @@ interface YouTubePlayerProps {
   isMuted: boolean;
   onReady: (player: YouTubePlayer) => void;
   onStateChange: (event: { target: YouTubePlayer; data: number }) => void;
+  onStreamError: () => void;
 }
 
-export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onReady, onStateChange }: YouTubePlayerProps) {
+export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onReady, onStateChange, onStreamError }: YouTubePlayerProps) {
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   // Handle player ready event
@@ -52,6 +53,21 @@ export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onR
     }
   }, [isMuted]);
 
+  // This function handles errors from the YouTube player.
+  const handleError = (event: { target: YouTubePlayer; data: number }) => {
+    const error = event.data;
+    // These error codes indicate that the video is unavailable.
+    // 2: Invalid video ID
+    // 5: HTML5 player error
+    // 100: Video not found
+    // 101: Video not embeddable
+    // 150: Same as 101, just a different name
+    if ([2, 5, 100, 101, 150].includes(error)) {
+      // This comment explains that the onStreamError function is called when a stream fails to load.
+      onStreamError();
+    }
+  };
+
   // Parameters come from Youtube Iframe API docs
   const opts: YouTubeProps['opts'] = {
     height: '0',  // Hidden player frames
@@ -73,6 +89,7 @@ export default function YouTubePlayer({ videoId, isPlaying, volume, isMuted, onR
         opts={opts}
         onReady={handleReady}
         onStateChange={onStateChange}
+        onError={handleError}
       />
     </div>
   );
